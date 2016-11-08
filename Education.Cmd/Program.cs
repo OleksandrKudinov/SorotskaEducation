@@ -79,6 +79,21 @@ namespace Education.Cmd
             Console.WriteLine(a);
         }
 
+        public static string GetAnimalType()
+        {
+            return Console.ReadLine();
+        }
+
+        static void Task_SORED_3()
+        {
+            var animalType = GetAnimalType();
+
+            /*
+             * використати свіч кейс для виводу інформації про тваринку.
+             * дозволяється cat, dog, horse, owl, rat.
+             */
+        }
+
         static void Main(string[] args)
         {
             Task_SORED_2();
