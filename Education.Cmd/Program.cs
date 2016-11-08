@@ -18,6 +18,29 @@ namespace Education.Cmd
         {
             //перевірка чи число є простим (шляхом порівняння)
             //якщо число наявне в масиві - вивести повідомлення, що число просте
+            int n = 42;
+
+            bool Is = false;
+
+            for (int i = 0; i < primeNumbers.Length; i++)
+            {
+                if (n == primeNumbers[i])
+                {
+                    Is = true;
+
+                }
+            }
+
+            if (Is == true)
+            {
+                Console.WriteLine("єєє");
+            }
+            else
+            {
+                Console.WriteLine("Чоооо");
+            }
+
+
         }
 
         static void Task_SORED_1()
