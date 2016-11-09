@@ -86,17 +86,34 @@ namespace Education.Cmd
 
         static void Task_SORED_3()
         {
-            var animalType = GetAnimalType();
+            string animalType = GetAnimalType();
 
             /*
              * використати свіч кейс для виводу інформації про тваринку.
-             * дозволяється cat, dog, horse, owl, rat.
+             *дозволяється cat, dog, horse, owl, rat.
              */
+            switch (animalType)
+            {
+                case "cat": Console.WriteLine("Cat say myau"); 
+                    break;
+                case "dog": Console.WriteLine("Dog say gag");
+                    break;
+                case "horse":Console.WriteLine("horse say frrr");
+                    break;
+                case "owl":Console.WriteLine("Owl say puhu");
+                    break;
+                case "rat":Console.WriteLine("Rat say piii");
+                    break;
+                default: Console.WriteLine("i don`t know this animal");
+                    break;
+            }
+
         }
 
         static void Main(string[] args)
         {
             Task_SORED_2();
+            Task_SORED_3();
             Console.ReadLine();
         }
     }
