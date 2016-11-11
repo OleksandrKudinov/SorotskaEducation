@@ -18,12 +18,30 @@ namespace Education.Cmd
             } while (!parser);
             return chuslo;
         }
-        public static void Task_SORED_7()
+        public static void ShowMatrix(int[,] matrix, int x, int y)
         {
-
-            Console.WriteLine("Please write value y");
-            int x = ReadIntFromConsole();
+            for (int j = 0; j < y; j++)
+            {
+                for (int i = 0; i < x; i++)
+                {
+                    if (matrix[i, j] == 1)
+                    {
+                        Console.Write((char)0x2665);
+                    }
+                    else
+                    {
+                        Console.Write(" ");
+                    }
+                    //Console.Write(matrix[i,j]);
+                }
+                Console.WriteLine();
+            }
+        }
+        public static void Task_SORED_8()
+        {
             Console.WriteLine("Please write value x");
+            int x = ReadIntFromConsole();
+            Console.WriteLine("Please write value y");
             int y = ReadIntFromConsole();
             Console.WriteLine("Write please virogidnist");
             int v = ReadIntFromConsole();
@@ -31,9 +49,9 @@ namespace Education.Cmd
             //Console.WriteLine(y);
             int[,] matrix = new int[x, y];
             Random rnd = new Random();
-            for (int i = 0; i < x; i++)
+            for (int j = 0; j < y; j++)
             {
-                for (int j = 0; j < y; j++)
+                for (int i = 0; i < x; i++)
                 {
                     if (rnd.Next(0, 100) <= v)
                     {
@@ -43,15 +61,19 @@ namespace Education.Cmd
                     {
                         matrix[i, j] = 0;
                     }
-                    Console.Write(matrix[i, j]);
 
                 }
-                Console.WriteLine();
+                //  Console.WriteLine();
             }
+            ShowMatrix(matrix, x, y);
+
         }
         static void Main(string[] args)
         {
-            Task_SORED_7();
+            Console.WriteLine((char)0x2665);
+            string s = ((char)0x2665).ToString();
+            Console.WriteLine(s);
+            Task_SORED_8();
             Console.ReadLine();
         }
     }
