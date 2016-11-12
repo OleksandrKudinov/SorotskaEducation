@@ -20,24 +20,40 @@ namespace Education.Cmd
         }
         public static void ShowMatrix(int[,] matrix, int x, int y)
         {
+            for (int i = 0; i < x+2; i++)
+            {
+                Console.Write("_");
+          
+            }
+            Console.WriteLine();
             for (int j = 0; j < y; j++)
             {
+
+                Console.Write("|");
+
                 for (int i = 0; i < x; i++)
                 {
+                    
                     if (matrix[i, j] == 1)
                     {
                         Console.Write((char)0x2665);
                     }
                     else
                     {
-                        Console.Write(" ");
+                        Console.Write("+");
                     }
                     //Console.Write(matrix[i,j]);
                 }
-                Console.WriteLine();
+                Console.WriteLine("|" );
             }
+            for (int i = 0; i < x + 2; i++)
+            {
+                Console.Write("-");
+
+            }
+          
         }
-        public static void Task_SORED_8()
+        public static void Task_SORED_9()
         {
             Console.WriteLine("Please write value x");
             int x = ReadIntFromConsole();
@@ -73,7 +89,7 @@ namespace Education.Cmd
             Console.WriteLine((char)0x2665);
             string s = ((char)0x2665).ToString();
             Console.WriteLine(s);
-            Task_SORED_8();
+            Task_SORED_9();
             Console.ReadLine();
         }
     }
