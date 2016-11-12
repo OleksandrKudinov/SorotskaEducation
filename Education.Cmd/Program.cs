@@ -1,112 +1,188 @@
 ﻿using System;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Education.Cmd
 {
     class Program
     {
-        static int[] primeNumbers = new int[]
-        { 2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37,
-            41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97 };
-
-        static int GetSelectItemIndex(string[] items)
+        private static int[,] InitializeMatrix(int x, int y)
         {
-            for (int i = 0; i < items.Length; i++)
-            {
-                Console.WriteLine("{0} - {1}", items[i], i);
-            }
-
-            string rawValue;
-            int index = -1;
-            string message = "Select type: ";
-
-            Console.Write(message);
-            while (ReadString(out rawValue) && !int.TryParse(rawValue, out index) && index >= 0 && index < items.Length)
-            {
-                Console.WriteLine("Invalid type!");
-                Console.WriteLine(message);
-            }
-            return index;
+            return new int[x, y];
         }
 
-        static bool ReadString(out string value)
+        private static int[,] SetBonuses(int[,] matrix, int bonuseScale, int bonusValue)
+        {
+            int x;
+            int y;
+
+            GetMatrixXY(matrix, out x, out y);
+            Random rand = new Random();
+
+            for (int j = 0; j < y; j++)
+            {
+                for (int i = 0; i < x; i++)
+                {
+                    matrix[i, j] = rand.Next(0, 100) < bonuseScale ? bonusValue : 0;
+                }
+            }
+
+            return matrix;
+        }
+
+        public static void GetMatrixXY(int[,] matrix, out int x, out int y)
+        {
+            x = matrix.GetLength(0);
+            y = matrix.GetLength(1);
+        }
+
+        public static bool ReadStringFromConsole(out string value)
         {
             value = Console.ReadLine();
             return true;
         }
 
-        static void ErrorMessage(string incorrectValue, string type)
+        public static bool InRange(int value, int min, int max)
         {
-            Console.WriteLine("Error! Cannot parse '{0}' to {1}", incorrectValue, type);
+            bool isInRange = min <= value && value <= max;
+            return isInRange;
         }
 
-        static void MessageForSettingType(string type)
+        public static int ReadInt(int min, int max)
         {
-            Console.Write("Set {0} value: ", type);
+            string rawValue = null;
+            int value = 0;
+            while (ReadStringFromConsole(out rawValue) && !int.TryParse(rawValue, out value) || !InRange(value, min, max))
+            {
+                Console.WriteLine("Invalid value! Value must be in range [{0}:{1}]", min, max);
+            }
+            return value;
         }
 
-        static void ProcessError(string incorrectValue, string type)
+        public static void ShowMatrix(int[,] matrix, string values)
         {
-            ErrorMessage(incorrectValue, type);
-            MessageForSettingType(type);
+            Console.Clear();
+            int x;
+            int y;
+            GetMatrixXY(matrix, out x, out y);
+
+            for (int i = 0; i < x + 2; i++)
+            {
+                Console.Write("-");
+            }
+            Console.WriteLine();
+
+            for (int j = 0; j < y; j++)
+            {
+                Console.Write("|");
+                for (int i = 0; i < x; i++)
+                {
+                    Console.Write(values[matrix[i, j]]);
+                }
+                Console.Write("|");
+
+                Console.WriteLine();
+            }
+
+            for (int i = 0; i < x + 2; i++)
+            {
+                Console.Write("-");
+            }
+            Console.WriteLine();
+        }
+
+        private static void ReadNewPosition(ref int x, ref int y)
+        {
+            while (true)
+            {
+                ConsoleKeyInfo pressedKey = Console.ReadKey(true);
+
+                switch (pressedKey.Key)
+                {
+                    case ConsoleKey.UpArrow:
+                        y--;
+                        return;
+                    case ConsoleKey.DownArrow:
+                        y++;
+                        return;
+                    case ConsoleKey.RightArrow:
+                        x++;
+                        return;
+                    case ConsoleKey.LeftArrow:
+                        x--;
+                        return;
+                }
+            }
+        }
+
+        private static int[,] SetPerson(int[,] matrix, int personValue, int oldX, int oldY, int newX, int newY)
+        {
+            matrix[oldX, oldY] = 0;
+            matrix[newX, newY] = personValue;
+            return matrix;
+        }
+
+        private static void CorrectPersonXYCoordinates(ref int personX, ref int personY, int minX, int maxX, int minY, int maxY)
+        {
+            if (personX > maxX)
+            {
+                personX = maxX;
+            }
+            if (personX < minX)
+            {
+                personX = minX;
+            }
+            if (personY > maxY)
+            {
+                personY = maxY;
+            }
+            if (personY < minY)
+            {
+                personY = minY;
+            }
         }
 
         static void Main(string[] args)
         {
-            string[] types = new[] { "bool", "byte", "int", "double" };
+            string characters = " +o";
+            int personValue = 2;
+            int bonusValue = 1;
 
-            string choise = null;
-            do
+            Console.Write("x: ");
+            int x = ReadInt(0, Console.WindowWidth - 2);
+            Console.Write("y: ");
+            int y = ReadInt(0, Console.WindowHeight - 2);
+            Console.Write("bonus solid percents: ");
+            int percents = ReadInt(0, 100);
+
+
+            int minX = 0;
+            int minY = 0;
+            int maxX = x - 1;
+            int maxY = y - 1;
+
+            Console.Write("person x: ");
+            int newX = ReadInt(minX, maxX);
+            Console.Write("person y: ");
+            int newY = ReadInt(minY, maxY);
+
+            var matrix = InitializeMatrix(x, y);
+            matrix = SetBonuses(matrix, percents, bonusValue);
+
+            int oldX;
+            int oldY;
+
+            matrix = SetPerson(matrix, personValue, newX, newY, newX, newY);
+            ShowMatrix(matrix, characters);
+
+            while (true)
             {
-                int typeIndex = GetSelectItemIndex(types);
-
-                string rawValue;
-                string parsedValue = null;
-                string selectedType = types[typeIndex];
-
-                MessageForSettingType(types[typeIndex]);
-
-                switch (typeIndex)
-                {
-                    case 0:
-                        bool boolValue = false;
-                        while (ReadString(out rawValue) && !bool.TryParse(rawValue, out boolValue))
-                        {
-                            ProcessError(rawValue, selectedType);
-                        }
-                        parsedValue = boolValue.ToString();
-                        break;
-                    case 1:
-                        byte byteValue = 0;
-                        while (ReadString(out rawValue) && !byte.TryParse(rawValue, out byteValue))
-                        {
-                            ProcessError(rawValue, selectedType);
-                        }
-                        parsedValue = byteValue.ToString();
-                        break;
-                    case 2:
-                        int intValue = 0;
-                        while (ReadString(out rawValue) && !int.TryParse(rawValue, out intValue))
-                        {
-                            ProcessError(rawValue, selectedType);
-                        }
-                        parsedValue = intValue.ToString();
-                        break;
-                    case 3:
-                        double doubleValue = 0;
-                        while (ReadString(out rawValue) && !double.TryParse(rawValue, out doubleValue))
-                        {
-                            ProcessError(rawValue, selectedType);
-                        }
-                        parsedValue = doubleValue.ToString();
-                        break;
-                }
-
-                Console.WriteLine("{0} value is {1}", types[typeIndex], parsedValue);
-
-                Console.Write("Continue? <y/n>");
-            } while (ReadString(out choise) && choise == "y");
-
-            Console.ReadLine();
+                oldX = newX;
+                oldY = newY;
+                ReadNewPosition(ref newX, ref newY);
+                CorrectPersonXYCoordinates(ref newX, ref newY, minX, maxX, minY, maxY);
+                matrix = SetPerson(matrix, personValue, oldX, oldY, newX, newY);
+                ShowMatrix(matrix, characters);
+            }
         }
     }
 }
