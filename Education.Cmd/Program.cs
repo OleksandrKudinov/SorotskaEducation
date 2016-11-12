@@ -20,10 +20,10 @@ namespace Education.Cmd
         }
         public static void ShowMatrix(int[,] matrix, int x, int y)
         {
-            for (int i = 0; i < x+2; i++)
+            for (int i = 0; i < x + 2; i++)
             {
                 Console.Write("_");
-          
+
             }
             Console.WriteLine();
             for (int j = 0; j < y; j++)
@@ -33,27 +33,31 @@ namespace Education.Cmd
 
                 for (int i = 0; i < x; i++)
                 {
-                    
-                    if (matrix[i, j] == 1)
+
+                    switch (matrix[i, j])
                     {
-                        Console.Write((char)0x2665);
+                        case 0:
+                            Console.Write("+");
+                            break;
+                        case 1:
+                            Console.Write((char)0x2665);
+                            break;
+                        case 2:
+                            Console.Write("☺");
+                            break;
                     }
-                    else
-                    {
-                        Console.Write("+");
-                    }
-                    //Console.Write(matrix[i,j]);
+
                 }
-                Console.WriteLine("|" );
+                Console.WriteLine("|");
             }
             for (int i = 0; i < x + 2; i++)
             {
                 Console.Write("-");
 
             }
-          
+            Console.WriteLine();
         }
-        public static void Task_SORED_9()
+        public static void Task_SORED_10()
         {
             Console.WriteLine("Please write value x");
             int x = ReadIntFromConsole();
@@ -61,27 +65,37 @@ namespace Education.Cmd
             int y = ReadIntFromConsole();
             Console.WriteLine("Write please virogidnist");
             int v = ReadIntFromConsole();
-            //Console.WriteLine(x);
-            //Console.WriteLine(y);
-            int[,] matrix = new int[x, y];
-            Random rnd = new Random();
-            for (int j = 0; j < y; j++)
-            {
-                for (int i = 0; i < x; i++)
-                {
-                    if (rnd.Next(0, 100) <= v)
-                    {
-                        matrix[i, j] = 1;
-                    }
-                    else
-                    {
-                        matrix[i, j] = 0;
-                    }
+            Console.Write("Please write coordinate x for persone ");
+            int personX = ReadIntFromConsole();
+            Console.Write("Please write coordinate y for persone ");
+            int personY = ReadIntFromConsole();
 
+            if (personX < x && personX >= 0 && personY < y && personY >= 0)
+            {
+                int[,] matrix = new int[x, y];
+                Random rnd = new Random();
+                for (int j = 0; j < y; j++)
+                {
+                    for (int i = 0; i < x; i++)
+                    {
+                        if (rnd.Next(0, 100) <= v)
+                        {
+                            matrix[i, j] = 1;
+                        }
+                        else
+                        {
+                            matrix[i, j] = 0;
+                        }
+                    }
                 }
-                //  Console.WriteLine();
+                matrix[personX, personY] = 2;
+                ShowMatrix(matrix, x, y);
             }
-            ShowMatrix(matrix, x, y);
+            else
+            {
+                Console.WriteLine("Write corect  x,y for persone");
+            }
+
 
         }
         static void Main(string[] args)
@@ -89,7 +103,7 @@ namespace Education.Cmd
             Console.WriteLine((char)0x2665);
             string s = ((char)0x2665).ToString();
             Console.WriteLine(s);
-            Task_SORED_9();
+            Task_SORED_10();
             Console.ReadLine();
         }
     }
