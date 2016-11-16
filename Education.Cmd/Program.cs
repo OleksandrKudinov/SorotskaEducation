@@ -3,9 +3,9 @@ using System.Security.Cryptography.X509Certificates;
 
 namespace Education.Cmd
 {
-    class Program
+    public class ReadIntFromConsole
     {
-        public static int ReadIntFromConsole()
+        public static int ReadInt()
         {
             bool parser = true;
             int chuslo;
@@ -19,8 +19,13 @@ namespace Education.Cmd
                 }
             } while (!parser);
             return chuslo;
+
         }
-        public static void ShowMatrix(int[,] matrix)
+    }
+
+    public class ShowMatrixs
+    {
+        public static void Show(int[,] matrix)
         {
             Console.Clear();
             int x = matrix.GetLength(0);
@@ -62,7 +67,11 @@ namespace Education.Cmd
             }
             Console.WriteLine();
         }
-        public static int[] GetNewCoordinates(int x, int y)
+    }
+
+    public  class GetNewCoordinates
+    {
+        public static int[] GetCoordinates(int x, int y)
         {
             while (true)
             {
@@ -88,20 +97,30 @@ namespace Education.Cmd
             }
         }
 
-        public static int[,] Inizialaized()
+
+    }
+
+    public class Inizialaized
+    {
+        public static int[,] InizialaizedMethod()
         {
+            ReadIntFromConsole readInt = new ReadIntFromConsole();
             Console.WriteLine("Please write value x");
-            int x = ReadIntFromConsole();
+            int x = ReadIntFromConsole.ReadInt();
             Console.WriteLine("Please write value y");
-            int y = ReadIntFromConsole();
+            int y = ReadIntFromConsole.ReadInt();
             int[,] matrix = new int[x, y];
             return matrix;
         }
 
-        public static int[,] SetBonus(int[,] matrix)
+    }
+
+    public class SetBonus
+    {
+        public static int[,] Bonus(int[,] matrix)
         {
             Console.WriteLine("Write please virogidnist");
-            int v = ReadIntFromConsole();
+            int v = ReadIntFromConsole.ReadInt();
             int x = matrix.GetLength(0);
             int y = matrix.GetLength(1);
             Random rnd = new Random();
@@ -118,12 +137,16 @@ namespace Education.Cmd
             return matrix;
         }
 
-        public static int[] SetPersone(int x, int y)
+    }
+
+    public class SetPersone
+    {
+        public static int[] Persone(int x, int y)
         {
             Console.Write("Please write coordinate x for persone ");
-            int personX = ReadIntFromConsole();
+            int personX = ReadIntFromConsole.ReadInt();
             Console.Write("Please write coordinate y for persone ");
-            int personY = ReadIntFromConsole();
+            int personY = ReadIntFromConsole.ReadInt();
             while (true)
             {
 
@@ -142,13 +165,17 @@ namespace Education.Cmd
             }
         }
 
+    }
+
+    public class GlobalCalss
+    {
         public static void Task_SORED_12()
         {
-            int[,] matrix = Inizialaized();
+            int[,] matrix = Inizialaized.InizialaizedMethod();
             int x = matrix.GetLength(0) - 1;
             int y = matrix.GetLength(1) - 1;
-            matrix = SetBonus(matrix);
-            int[] point = SetPersone(x, y);
+            matrix = SetBonus.Bonus(matrix);
+            int[] point = SetPersone.Persone(x, y);
             matrix[point[0], point[1]] = 2;
 
             Console.WriteLine();
@@ -156,9 +183,9 @@ namespace Education.Cmd
             int[] newpoint = point;
             while (true)
             {
-                ShowMatrix(matrix);
+                ShowMatrixs.Show(matrix);
                 point = newpoint;
-                newpoint = GetNewCoordinates(point[0], point[1]);
+                newpoint = GetNewCoordinates.GetCoordinates(point[0], point[1]);
                 matrix[point[0], point[1]] = 0;
                 if (newpoint[0] >= matrix.GetLength(0))
                 {
@@ -180,9 +207,13 @@ namespace Education.Cmd
 
             }
         }
+    }
+    class Program
+    {
         static void Main(string[] args)
         {
-            Task_SORED_12();
+            GlobalCalss global = new GlobalCalss();
+            GlobalCalss.Task_SORED_12();
             Console.ReadLine();
 
         }
